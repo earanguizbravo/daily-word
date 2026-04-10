@@ -33,6 +33,7 @@ async function init() {
     const vocab = await res.json();
     renderDay(vocab);
   } catch (e) {
+    console.error(e);
     document.getElementById('loading').textContent = '⚠️ Error cargando palabras.';
   }
 }
@@ -54,18 +55,26 @@ function renderDay(vocab) {
   document.getElementById('examples').innerHTML = current.examples.map(e => `<li>"${e}"</li>`).join('');
 
   // Audio
-  document.getElementById('listen-btn').onclick = () => {
-    const u = new SpeechSynthesisUtterance(current.word + ". " + current.examples[0]);
-    u.lang = 'en-US';
-    u.rate = 0.9;
-    speechSynthesis.speak(u);
-  };
+  const listenBtn = document.getElementById('listen-btn');
+  if (listenBtn) {
+    listenBtn.onclick = () => {
+      const u = new SpeechSynthesisUtterance(current.word + ". " + current.examples[0]);
+      u.lang = 'en-US';
+      u.rate = 0.9;
+      speechSynthesis.speak(u);
+    };
+  }
 
-  // Quiz: Aparece DESPUÉS de que el usuario hace clic en "Estudiar"
-  document.getElementById('study-btn').onclick = () => {
-    document.getElementById('study-section').classList.add('hidden');
-    generateQuiz(current, vocab);
-  };
+  // Botón de estudio - ASIGNAR EVENTO
+  const studyBtn = document.getElementById('study-btn');
+  if (studyBtn) {
+    studyBtn.onclick = () => {
+      document.getElementById('study-section').classList.add('hidden');
+      generateQuiz(current, vocab);
+    };
+  } else {
+    console.error('No se encontró study-btn');
+  }
 }
 
 function generateQuiz(current, vocab) {
@@ -101,9 +110,13 @@ function handleAnswer(btn, isCorrect, current) {
     setTimeout(showDone, 800);
   } else {
     btn.classList.add('wrong');
-    options.find(o => o.textContent === current.definition).classList.add('correct');
+    const correctBtn = Array.from(options).find(o => o.textContent === current.definition);
+    if (correctBtn) correctBtn.classList.add('correct');
     setTimeout(() => {
-      options.forEach(o => { o.disabled = false; o.classList.remove('wrong','correct'); });
+      options.forEach(o => { 
+        o.disabled = false; 
+        o.classList.remove('wrong','correct'); 
+      });
     }, 1500);
   }
 }
@@ -114,4 +127,5 @@ function showDone() {
   document.getElementById('done').classList.remove('hidden');
 }
 
+// Iniciar app
 init();
