@@ -35,6 +35,17 @@ h1 { font-size: 1.5rem; }
 ul { margin: 0.8rem 0 0 1.2rem; }
 li { margin-bottom: 0.4rem; }
 
+.translation {
+  color: #0f5132;
+  background: #d1e7dd;
+  font-weight: 600;
+  padding: 0.5rem 0.8rem;
+  border-radius: 8px;
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-size: 1.05rem;
+}
+
 .btn {
   background: var(--primary);
   color: white;
