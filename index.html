@@ -16,11 +16,11 @@
     <section id="loading">Cargando tu palabra del día...</section>
 
     <section id="content" class="hidden">
-      <!-- SECCIÓN DE ESTUDIO -->
       <div class="card" id="study-section">
         <h2 id="word"></h2>
         <p id="phonetic" class="muted"></p>
         <p><strong id="pos"></strong> • <span id="definition"></span></p>
+        <p id="translation" class="translation"></p>
         <ul id="examples"></ul>
         <div style="margin-top: 1rem;">
           <button id="listen-btn" class="btn">🔊 Escuchar</button>
@@ -30,13 +30,11 @@
         </div>
       </div>
 
-      <!-- QUIZ -->
       <div class="card hidden" id="quiz">
         <p id="quiz-question"></p>
         <div id="quiz-options"></div>
       </div>
 
-      <!-- COMPLETADO -->
       <div class="card hidden" id="done">
         <h3>✅ ¡Listo por hoy!</h3>
         <p>Vuelve mañana para continuar tu racha.</p>
