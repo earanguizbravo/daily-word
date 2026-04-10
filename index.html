@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DailyWord | 10 min de inglés</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="app">
+    <header>
+      <h1>📖 DailyWord</h1>
+      <div id="streak">🔥 0</div>
+    </header>
+
+    <section id="loading">Cargando tu palabra del día...</section>
+
+    <section id="content" class="hidden">
+      <div class="card">
+        <h2 id="word"></h2>
+        <p id="phonetic" class="muted"></p>
+        <p><strong id="pos"></strong> • <span id="definition"></span></p>
+        <ul id="examples"></ul>
+        <button id="listen-btn" class="btn">🔊 Escuchar</button>
+      </div>
+
+      <div class="card hidden" id="quiz">
+        <p id="quiz-question"></p>
+        <div id="quiz-options"></div>
+      </div>
+
+      <div class="card hidden" id="done">
+        <h3>✅ ¡Listo por hoy!</h3>
+        <p>Vuelve mañana para continuar tu racha.</p>
+        <small>⏱️ Tiempo estimado: 8 min</small>
+      </div>
+    </section>
+
+    <footer>
+      <p>Hecho con ❤️ para aprender sin estrés</p>
+    </footer>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
