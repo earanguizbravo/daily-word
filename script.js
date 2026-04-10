@@ -8,7 +8,6 @@ const STORAGE = {
 const today = new Date().toISOString().split('T')[0];
 
 async function init() {
-  // 1. Inicializar streak
   const lastDate = localStorage.getItem(STORAGE.lastDate);
   let streak = parseInt(localStorage.getItem(STORAGE.streak) || 0);
   
@@ -20,13 +19,11 @@ async function init() {
   }
   document.getElementById('streak').textContent = `🔥 ${streak}`;
 
-  // 2. Verificar si ya se completó hoy
   if (localStorage.getItem(STORAGE.completed) === today) {
     showDone();
     return;
   }
 
-  // 3. Cargar vocabulario
   try {
     const res = await fetch('vocabulary.json');
     if (!res.ok) throw new Error('JSON no encontrado');
@@ -52,9 +49,9 @@ function renderDay(vocab) {
   document.getElementById('phonetic').textContent = current.phonetic;
   document.getElementById('pos').textContent = current.pos;
   document.getElementById('definition').textContent = current.definition;
+  document.getElementById('translation').textContent = `🇪🇸 ${current.translation}`;
   document.getElementById('examples').innerHTML = current.examples.map(e => `<li>"${e}"</li>`).join('');
 
-  // Audio
   const listenBtn = document.getElementById('listen-btn');
   if (listenBtn) {
     listenBtn.onclick = () => {
@@ -65,29 +62,25 @@ function renderDay(vocab) {
     };
   }
 
-  // Botón de estudio - ASIGNAR EVENTO
   const studyBtn = document.getElementById('study-btn');
   if (studyBtn) {
     studyBtn.onclick = () => {
       document.getElementById('study-section').classList.add('hidden');
       generateQuiz(current, vocab);
     };
-  } else {
-    console.error('No se encontró study-btn');
   }
 }
 
 function generateQuiz(current, vocab) {
   const quiz = document.getElementById('quiz');
   quiz.classList.remove('hidden');
-  document.getElementById('quiz-question').textContent = `¿Qué significa "${current.word}"?`;
+  document.getElementById('quiz-question').textContent = `¿Qué significa "${current.word}" en español?`;
 
-  // Crear opciones: 1 correcta + 3 distractores
   const distractors = vocab.filter(v => v.id !== current.id)
                            .sort(() => Math.random() - 0.5)
                            .slice(0, 3)
-                           .map(v => v.definition);
-  const options = [current.definition, ...distractors].sort(() => Math.random() - 0.5);
+                           .map(v => v.translation);
+  const options = [current.translation, ...distractors].sort(() => Math.random() - 0.5);
 
   const container = document.getElementById('quiz-options');
   container.innerHTML = '';
@@ -95,7 +88,7 @@ function generateQuiz(current, vocab) {
     const btn = document.createElement('button');
     btn.className = 'option';
     btn.textContent = opt;
-    btn.onclick = () => handleAnswer(btn, opt === current.definition, current);
+    btn.onclick = () => handleAnswer(btn, opt === current.translation, current);
     container.appendChild(btn);
   });
 }
@@ -110,13 +103,10 @@ function handleAnswer(btn, isCorrect, current) {
     setTimeout(showDone, 800);
   } else {
     btn.classList.add('wrong');
-    const correctBtn = Array.from(options).find(o => o.textContent === current.definition);
+    const correctBtn = Array.from(options).find(o => o.textContent === current.translation);
     if (correctBtn) correctBtn.classList.add('correct');
     setTimeout(() => {
-      options.forEach(o => { 
-        o.disabled = false; 
-        o.classList.remove('wrong','correct'); 
-      });
+      options.forEach(o => { o.disabled = false; o.classList.remove('wrong','correct'); });
     }, 1500);
   }
 }
@@ -127,5 +117,4 @@ function showDone() {
   document.getElementById('done').classList.remove('hidden');
 }
 
-// Iniciar app
 init();
