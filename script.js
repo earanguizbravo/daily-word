@@ -33,7 +33,7 @@ async function init() {
     const vocab = await res.json();
     renderDay(vocab);
   } catch (e) {
-    document.getElementById('loading').textContent = '⚠️ Error cargando palabras. Verifica que vocabulary.json esté en la raíz.';
+    document.getElementById('loading').textContent = '⚠️ Error cargando palabras.';
   }
 }
 
@@ -61,21 +61,24 @@ function renderDay(vocab) {
     speechSynthesis.speak(u);
   };
 
-  // Quiz (aparece a los 2 seg)
-  setTimeout(() => generateQuiz(current, vocab), 2000);
+  // Quiz: Aparece DESPUÉS de que el usuario hace clic en "Estudiar"
+  document.getElementById('study-btn').onclick = () => {
+    document.getElementById('study-section').classList.add('hidden');
+    generateQuiz(current, vocab);
+  };
 }
 
 function generateQuiz(current, vocab) {
   const quiz = document.getElementById('quiz');
   quiz.classList.remove('hidden');
-  document.getElementById('quiz-question').textContent = `¿Qué palabra significa: "${current.definition}"?`;
+  document.getElementById('quiz-question').textContent = `¿Qué significa "${current.word}"?`;
 
-  // Crear opciones: 1 correcta + 3 distractores aleatorios
+  // Crear opciones: 1 correcta + 3 distractores
   const distractors = vocab.filter(v => v.id !== current.id)
                            .sort(() => Math.random() - 0.5)
                            .slice(0, 3)
-                           .map(v => v.word);
-  const options = [current.word, ...distractors].sort(() => Math.random() - 0.5);
+                           .map(v => v.definition);
+  const options = [current.definition, ...distractors].sort(() => Math.random() - 0.5);
 
   const container = document.getElementById('quiz-options');
   container.innerHTML = '';
@@ -83,7 +86,7 @@ function generateQuiz(current, vocab) {
     const btn = document.createElement('button');
     btn.className = 'option';
     btn.textContent = opt;
-    btn.onclick = () => handleAnswer(btn, opt === current.word, current);
+    btn.onclick = () => handleAnswer(btn, opt === current.definition, current);
     container.appendChild(btn);
   });
 }
@@ -98,7 +101,7 @@ function handleAnswer(btn, isCorrect, current) {
     setTimeout(showDone, 800);
   } else {
     btn.classList.add('wrong');
-    options.find(o => o.textContent === current.word).classList.add('correct');
+    options.find(o => o.textContent === current.definition).classList.add('correct');
     setTimeout(() => {
       options.forEach(o => { o.disabled = false; o.classList.remove('wrong','correct'); });
     }, 1500);
@@ -106,8 +109,8 @@ function handleAnswer(btn, isCorrect, current) {
 }
 
 function showDone() {
-  document.getElementById('content').querySelector('#quiz')?.classList.add('hidden');
-  document.getElementById('content').querySelector('.card')?.classList.add('hidden');
+  document.getElementById('study-section')?.classList.add('hidden');
+  document.getElementById('quiz')?.classList.add('hidden');
   document.getElementById('done').classList.remove('hidden');
 }
 
