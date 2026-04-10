@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "word": "accomplish",
+    "phonetic": "/əˈkɑːm.plɪʃ/",
+    "pos": "verb",
+    "definition": "succeed in doing or completing something",
+    "examples": ["She accomplished her goal in six months.", "We need to accomplish this before Friday."],
+    "synonyms": ["achieve", "complete", "fulfill"],
+    "topic": "work"
+  },
+  {
+    "id": 2,
+    "word": "resilient",
+    "phonetic": "/rɪˈzɪl.jənt/",
+    "pos": "adjective",
+    "definition": "able to recover quickly from difficulties",
+    "examples": ["Children are often more resilient than adults think.", "The company proved resilient during the crisis."],
+    "synonyms": ["tough", "adaptable", "strong"],
+    "topic": "personal_growth"
+  },
+  {
+    "id": 3,
+    "word": "clarify",
+    "phonetic": "/ˈklær.ə.faɪ/",
+    "pos": "verb",
+    "definition": "make a statement or situation less confused and more comprehensible",
+    "examples": ["Could you clarify your last point?", "The manual clarifies the installation steps."],
+    "synonyms": ["explain", "clear up", "specify"],
+    "topic": "communication"
+  },
+  {
+    "id": 4,
+    "word": "efficient",
+    "phonetic": "/ɪˈfɪʃ.ənt/",
+    "pos": "adjective",
+    "definition": "achieving maximum productivity with minimum wasted effort",
+    "examples": ["The new system is more efficient.", "She's very efficient at managing her time."],
+    "synonyms": ["productive", "effective", "organized"],
+    "topic": "work"
+  },
+  {
+    "id": 5,
+    "word": "challenge",
+    "phonetic": "/ˈtʃæl.ɪnd/",
+    "pos": "noun",
+    "definition": "a task or situation that tests someone's abilities",
+    "examples": ["This project is a real challenge.", "I enjoy challenges that push me."],
+    "synonyms": ["difficulty", "obstacle", "test"],
+    "topic": "personal_growth"
+  }
+]
