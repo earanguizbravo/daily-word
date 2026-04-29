@@ -3,49 +3,130 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DailyWord | 10 min de inglés</title>
+  <meta name="description" content="Aprende inglés con una palabra al día en 90 segundos">
+  <meta name="theme-color" content="#0d6efd">
+  <title>DailyWord | Inglés en 90 segundos</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
 </head>
 <body>
+  <div class="progress-bar" id="progress-bar" style="--progress: 0%"></div>
+  
   <main id="app">
     <header>
-      <h1>📖 DailyWord</h1>
-      <div id="streak">🔥 0</div>
+      <div class="header-left">
+        <h1>📖 DailyWord</h1>
+        <p class="subtitle">Inglés en 90 segundos</p>
+      </div>
+      <div class="header-right">
+        <div id="streak" class="streak-badge" title="Racha de días">🔥 0</div>
+        <button id="history-btn" class="icon-btn" title="Ver historial">📚</button>
+      </div>
     </header>
 
-    <section id="loading">Cargando tu palabra del día...</section>
+    <section id="loading" class="loading-section">
+      <div class="skeleton skeleton-title"></div>
+      <div class="skeleton skeleton-text"></div>
+      <div class="skeleton skeleton-text short"></div>
+    </section>
+
+    <section id="review-section" class="hidden">
+      <div class="card review-card">
+        <h2>🔄 Repaso necesario</h2>
+        <p>Tienes <strong id="review-count">0</strong> palabras por repasar</p>
+        <button id="start-review-btn" class="btn btn-primary">Comenzar repaso</button>
+      </div>
+    </section>
 
     <section id="content" class="hidden">
       <div class="card" id="study-section">
-        <h2 id="word"></h2>
-        <p id="phonetic" class="muted"></p>
-        <p><strong id="pos"></strong> • <span id="definition"></span></p>
+        <div class="word-header">
+          <h2 id="word" class="main-word"></h2>
+          <button id="listen-btn" class="audio-btn" title="Escuchar pronunciación">🔊</button>
+        </div>
+        
+        <p id="phonetic" class="phonetic"></p>
+        
+        <div class="word-info">
+          <span id="pos" class="pos-badge"></span>
+          <span id="definition" class="definition"></span>
+        </div>
+        
         <p id="translation" class="translation"></p>
-        <ul id="examples"></ul>
-        <div style="margin-top: 1rem;">
-          <button id="listen-btn" class="btn">🔊 Escuchar</button>
-          <button id="study-btn" class="btn" style="background:#198754;margin-left:0.5rem">
-            ✅ Ya estudié, hacer quiz
+        
+        <div class="examples-section">
+          <h3>Ejemplos:</h3>
+          <ul id="examples"></ul>
+        </div>
+
+        <div class="mnemonic-section hidden" id="mnemonic-section">
+          <p><strong>💡 Tip:</strong> <span id="mnemonic"></span></p>
+        </div>
+        
+        <div class="actions">
+          <button id="study-btn" class="btn btn-success">
+            ✅ Ya estudié (30s)
+          </button>
+          <button id="skip-review-btn" class="btn btn-secondary hidden">
+            ⏭️ Repasar después
           </button>
         </div>
       </div>
 
       <div class="card hidden" id="quiz">
-        <p id="quiz-question"></p>
-        <div id="quiz-options"></div>
+        <div class="quiz-header">
+          <span class="quiz-progress">Pregunta <span id="current-q">1</span> de <span id="total-q">1</span></span>
+          <div class="quiz-timer" id="quiz-timer">⏱️ 15s</div>
+        </div>
+        
+        <p id="quiz-question" class="quiz-question"></p>
+        <div id="quiz-options" class="quiz-options"></div>
+        
+        <div id="quiz-feedback" class="quiz-feedback hidden"></div>
       </div>
 
       <div class="card hidden" id="done">
-        <h3>✅ ¡Listo por hoy!</h3>
-        <p>Vuelve mañana para continuar tu racha.</p>
-        <small>⏱️ Tiempo estimado: 8 min</small>
+        <div class="celebration" id="celebration">🎉</div>
+        <h3>¡Excelente trabajo!</h3>
+        <div class="stats">
+          <div class="stat">
+            <span class="stat-value" id="time-spent">0s</span>
+            <span class="stat-label">Tiempo</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" id="accuracy">100%</span>
+            <span class="stat-label">Precisión</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" id="streak-display">🔥 0</span>
+            <span class="stat-label">Racha</span>
+          </div>
+        </div>
+        <p class="done-message">Vuelve mañana para mantener tu racha</p>
+        <button id="view-history-btn" class="btn btn-secondary">Ver mis palabras</button>
+      </div>
+
+      <div class="card hidden" id="history-panel">
+        <div class="history-header">
+          <h3>📚 Mis palabras</h3>
+          <button id="close-history" class="close-btn">×</button>
+        </div>
+        <div id="history-list" class="history-list"></div>
+        <button id="export-btn" class="btn btn-secondary" style="margin-top: 1rem;">
+          📥 Exportar a CSV
+        </button>
       </div>
     </section>
 
     <footer>
       <p>Hecho con ❤️ para aprender sin estrés</p>
+      <p class="footer-small">90 segundos al día = 365 palabras al año</p>
     </footer>
   </main>
+
+  <div id="confetti-canvas"></div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
