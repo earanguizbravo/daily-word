@@ -2,35 +2,61 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Aprende inglés con una palabra al día en 90 segundos">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Aprende inglés con una palabra al día en 90 segundos. Microaprendizaje con repaso espaciado, quiz interactivo y seguimiento de racha.">
   <meta name="theme-color" content="#0d6efd">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="DailyWord">
   <title>DailyWord | Inglés en 90 segundos</title>
+  
+  <!-- Google tag (gtag.js) - Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2597S5GGHL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-2597S5GGHL', {
+      page_title: 'DailyWord',
+      send_page_view: true,
+      anonymize_ip: true
+    });
+  </script>
+  
+  <!-- Preconnect para rendimiento -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
 </head>
 <body>
-  <div class="progress-bar" id="progress-bar" style="--progress: 0%"></div>
+  <!-- Barra de progreso de carga -->
+  <div class="progress-bar" id="progress-bar" style="--progress: 0%" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
   
-  <main id="app">
-    <header>
+  <main id="app" role="main">
+    
+    <!-- Header con branding y racha -->
+    <header role="banner">
       <div class="header-left">
         <h1>📖 DailyWord</h1>
         <p class="subtitle">Inglés en 90 segundos</p>
       </div>
       <div class="header-right">
-        <div id="streak" class="streak-badge" title="Racha de días">🔥 0</div>
-        <button id="history-btn" class="icon-btn" title="Ver historial">📚</button>
+        <div id="streak" class="streak-badge" title="Racha de días" aria-live="polite">🔥 0</div>
+        <button id="history-btn" class="icon-btn" title="Ver historial" aria-label="Ver historial de palabras">📚</button>
       </div>
     </header>
 
-    <section id="loading" class="loading-section">
+    <!-- Estado de carga con skeleton -->
+    <section id="loading" class="loading-section" aria-live="polite">
       <div class="skeleton skeleton-title"></div>
       <div class="skeleton skeleton-text"></div>
       <div class="skeleton skeleton-text short"></div>
     </section>
 
-    <section id="review-section" class="hidden">
+    <!-- Sección de repaso pendiente (SRS) -->
+    <section id="review-section" class="hidden" aria-live="polite">
       <div class="card review-card">
         <h2>🔄 Repaso necesario</h2>
         <p>Tienes <strong id="review-count">0</strong> palabras por repasar</p>
@@ -38,95 +64,166 @@
       </div>
     </section>
 
+    <!-- Contenido principal -->
     <section id="content" class="hidden">
+      
+      <!-- Tarjeta de estudio: palabra del día -->
       <div class="card" id="study-section">
         <div class="word-header">
-          <h2 id="word" class="main-word"></h2>
-          <button id="listen-btn" class="audio-btn" title="Escuchar pronunciación">🔊</button>
+          <h2 id="word" class="main-word" aria-label="Palabra del día"></h2>
+          <button id="listen-btn" class="audio-btn" title="Escuchar pronunciación" aria-label="Escuchar pronunciación en inglés">🔊</button>
         </div>
         
-        <p id="phonetic" class="phonetic"></p>
+        <p id="phonetic" class="phonetic" aria-label="Pronunciación fonética"></p>
         
         <div class="word-info">
-          <span id="pos" class="pos-badge"></span>
-          <span id="definition" class="definition"></span>
+          <span id="pos" class="pos-badge" aria-label="Categoría gramatical"></span>
+          <span id="definition" class="definition" aria-label="Definición en inglés"></span>
         </div>
         
-        <p id="translation" class="translation"></p>
+        <p id="translation" class="translation" aria-label="Traducción al español"></p>
         
         <div class="examples-section">
           <h3>Ejemplos:</h3>
-          <ul id="examples"></ul>
+          <ul id="examples" aria-label="Ejemplos de uso"></ul>
         </div>
 
-        <div class="mnemonic-section hidden" id="mnemonic-section">
+        <!-- Mnemotecnia opcional -->
+        <div class="mnemonic-section hidden" id="mnemonic-section" aria-live="polite">
           <p><strong>💡 Tip:</strong> <span id="mnemonic"></span></p>
         </div>
         
+        <!-- Acciones principales -->
         <div class="actions">
-          <button id="study-btn" class="btn btn-success">
+          <button id="study-btn" class="btn btn-success" aria-label="Marcar como estudiado y continuar al quiz">
             ✅ Ya estudié (30s)
           </button>
-          <button id="skip-review-btn" class="btn btn-secondary hidden">
+          <button id="skip-review-btn" class="btn btn-secondary hidden" aria-label="Posponer repaso para después">
             ⏭️ Repasar después
           </button>
         </div>
       </div>
 
-      <div class="card hidden" id="quiz">
+      <!-- Tarjeta de quiz interactivo -->
+      <div class="card hidden" id="quiz" role="region" aria-label="Quiz de comprensión">
         <div class="quiz-header">
           <span class="quiz-progress">Pregunta <span id="current-q">1</span> de <span id="total-q">1</span></span>
-          <div class="quiz-timer" id="quiz-timer">⏱️ 15s</div>
+          <div class="quiz-timer" id="quiz-timer" aria-live="polite">⏱️ 15s</div>
         </div>
         
         <p id="quiz-question" class="quiz-question"></p>
-        <div id="quiz-options" class="quiz-options"></div>
+        <div id="quiz-options" class="quiz-options" role="radiogroup" aria-label="Opciones de respuesta"></div>
         
-        <div id="quiz-feedback" class="quiz-feedback hidden"></div>
+        <div id="quiz-feedback" class="quiz-feedback hidden" aria-live="assertive"></div>
       </div>
 
-      <div class="card hidden" id="done">
-        <div class="celebration" id="celebration">🎉</div>
+      <!-- Tarjeta de completado con celebración -->
+      <div class="card hidden" id="done" role="region" aria-label="Sesión completada">
+        <div class="celebration" id="celebration" aria-hidden="true">🎉</div>
         <h3>¡Excelente trabajo!</h3>
-        <div class="stats">
-          <div class="stat">
+        
+        <div class="stats" role="list">
+          <div class="stat" role="listitem">
             <span class="stat-value" id="time-spent">0s</span>
             <span class="stat-label">Tiempo</span>
           </div>
-          <div class="stat">
+          <div class="stat" role="listitem">
             <span class="stat-value" id="accuracy">100%</span>
             <span class="stat-label">Precisión</span>
           </div>
-          <div class="stat">
+          <div class="stat" role="listitem">
             <span class="stat-value" id="streak-display">🔥 0</span>
             <span class="stat-label">Racha</span>
           </div>
         </div>
+        
         <p class="done-message">Vuelve mañana para mantener tu racha</p>
         <button id="view-history-btn" class="btn btn-secondary">Ver mis palabras</button>
       </div>
 
-      <div class="card hidden" id="history-panel">
+      <!-- Panel lateral de historial -->
+      <div class="card hidden" id="history-panel" role="dialog" aria-modal="true" aria-label="Historial de palabras aprendidas">
         <div class="history-header">
           <h3>📚 Mis palabras</h3>
-          <button id="close-history" class="close-btn">×</button>
+          <button id="close-history" class="close-btn" aria-label="Cerrar historial">×</button>
         </div>
-        <div id="history-list" class="history-list"></div>
+        <div id="history-list" class="history-list" role="list"></div>
         <button id="export-btn" class="btn btn-secondary" style="margin-top: 1rem;">
           📥 Exportar a CSV
         </button>
       </div>
+      
     </section>
 
-    <footer>
+    <!-- Footer con mensaje motivacional -->
+    <footer role="contentinfo">
       <p>Hecho con ❤️ para aprender sin estrés</p>
       <p class="footer-small">90 segundos al día = 365 palabras al año</p>
     </footer>
+    
   </main>
 
-  <div id="confetti-canvas"></div>
+  <!-- Canvas para efecto confetti -->
+  <div id="confetti-canvas" aria-hidden="true"></div>
   
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <script src="script.js"></script>
+  <!-- Cookie/Consent Banner (GDPR/Chile) -->
+  <div id="cookie-banner" class="cookie-banner hidden" role="alert" aria-live="assertive">
+    <p>Usamos cookies para analizar el uso de la app y mejorar tu experiencia. 
+       <a href="#" onclick="return false;" style="color:var(--primary);text-decoration:none;">Más información</a></p>
+    <button id="accept-cookies" class="btn btn-primary btn-sm">Aceptar</button>
+  </div>
+
+  <!-- Scripts externos -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js" defer></script>
+  
+  <!-- Script principal -->
+  <script src="script.js" defer></script>
+  
+  <!-- Estilos inline para cookie banner -->
+  <style>
+    .cookie-banner {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: var(--card); padding: 1rem 1.5rem;
+      box-shadow: 0 -2px 12px rgba(0,0,0,0.15);
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 1rem; z-index: 10000; font-size: 0.9rem;
+      border-top: 1px solid var(--border);
+    }
+    .cookie-banner p { margin: 0; flex: 1; line-height: 1.4; }
+    .btn-sm { padding: 0.5rem 1rem; font-size: 0.9rem; }
+    @media (max-width: 640px) {
+      .cookie-banner { flex-direction: column; text-align: center; padding: 1rem; }
+      .cookie-banner p { margin-bottom: 0.75rem; }
+    }
+  </style>
+  
+  <!-- Script de consentimiento de cookies -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Mostrar banner solo si no ha aceptado
+      if (!localStorage.getItem('dw_cookies_accepted')) {
+        setTimeout(() => {
+          document.getElementById('cookie-banner').classList.remove('hidden');
+        }, 2000);
+      }
+      
+      // Manejar aceptación
+      document.getElementById('accept-cookies')?.addEventListener('click', () => {
+        localStorage.setItem('dw_cookies_accepted', 'true');
+        document.getElementById('cookie-banner').classList.add('hidden');
+        
+        // Actualizar consentimiento en GA4 si está disponible
+        if (typeof gtag !== 'undefined') {
+          gtag('consent', 'update', { analytics_storage: 'granted' });
+        }
+      });
+      
+      // Si ya aceptó, otorgar consentimiento por defecto
+      if (localStorage.getItem('dw_cookies_accepted') === 'true' && typeof gtag !== 'undefined') {
+        gtag('consent', 'update', { analytics_storage: 'granted' });
+      }
+    });
+  </script>
+  
 </body>
 </html>
